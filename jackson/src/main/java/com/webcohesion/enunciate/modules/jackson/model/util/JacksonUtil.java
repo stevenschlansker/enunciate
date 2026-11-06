@@ -112,6 +112,19 @@ public class JacksonUtil {
       }
     }
 
+    tools.jackson.databind.annotation.JsonSerialize serialization3Info = referer != null ? referer.getAnnotation(tools.jackson.databind.annotation.JsonSerialize.class) : null;
+    if (serialization3Info == null && adaptedType instanceof DeclaredType) {
+      serialization3Info = ((DeclaredType) adaptedType).asElement().getAnnotation(tools.jackson.databind.annotation.JsonSerialize.class);
+    }
+
+    if (serialization3Info != null) {
+      final tools.jackson.databind.annotation.JsonSerialize finalInfo = serialization3Info;
+      DecoratedTypeMirror adapterTypeMirror = Annotations.mirrorOf(() -> isContained ? finalInfo.contentConverter() : finalInfo.converter(), env, tools.jackson.databind.util.Converter.None.class);
+      if (adapterTypeMirror instanceof  DeclaredType) {
+        return new AdapterType((DeclaredType) adapterTypeMirror, context);
+      }
+    }
+
     if (context.isHonorJaxb()) {
       XmlJavaTypeAdapter typeAdapterInfo = referer != null ? referer.getAnnotation(XmlJavaTypeAdapter.class) : null;
       if (adaptedType instanceof DeclaredType) {

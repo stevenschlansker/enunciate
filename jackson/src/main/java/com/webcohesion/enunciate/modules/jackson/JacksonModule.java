@@ -299,8 +299,9 @@ public class JacksonModule extends BasicProviderModule implements TypeDetectingM
   public boolean internal(Object type, MetadataAdapter metadata) {
     String classname = metadata.getClassName(type);
     this.jacksonDetected |= ObjectMapper.class.getName().equals(classname);
+    this.jacksonDetected |= tools.jackson.databind.ObjectMapper.class.getName().equals(classname);
     this.jaxbSupportDetected |= "com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector".equals(classname);
-    return classname.startsWith("com.fasterxml.jackson");
+    return classname.startsWith("com.fasterxml.jackson") || classname.startsWith("tools.jackson");
   }
 
   @Override
@@ -317,6 +318,6 @@ public class JacksonModule extends BasicProviderModule implements TypeDetectingM
   }
 
   boolean isJacksonSerializationAnnotation(String fqn) {
-    return !JacksonAnnotation.class.getName().equals(fqn) && (JsonSerialize.class.getName().equals(fqn) || fqn.startsWith(JsonFormat.class.getPackage().getName()));
+    return !JacksonAnnotation.class.getName().equals(fqn) && (JsonSerialize.class.getName().equals(fqn) || tools.jackson.databind.annotation.JsonSerialize.class.getName().equals(fqn) || fqn.startsWith(JsonFormat.class.getPackage().getName()));
   }
 }

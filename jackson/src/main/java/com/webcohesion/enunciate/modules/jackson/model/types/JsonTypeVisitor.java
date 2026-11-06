@@ -113,6 +113,22 @@ public class JsonTypeVisitor extends SimpleTypeVisitor6<JsonType, JsonTypeVisito
         }
       }
 
+      final tools.jackson.databind.annotation.JsonSerialize serialize3Info = declaredElement.getAnnotation(tools.jackson.databind.annotation.JsonSerialize.class);
+      if (serialize3Info != null) {
+        DecoratedTypeMirror using = Annotations.mirrorOf(serialize3Info::using, env, tools.jackson.databind.ValueSerializer.None.class);
+
+        if (using != null) {
+          //custom serializer; just say it's an object.
+          jsonType = KnownJsonType.OBJECT;
+        }
+
+        DecoratedTypeMirror as = Annotations.mirrorOf(serialize3Info::as, env, Void.class);
+
+        if (as != null) {
+          jsonType = (JsonType) as.accept(this, new Context(context.context, false, false, context.stack));
+        }
+      }
+
       AdapterType adapterType = JacksonUtil.findAdapterType(declaredElement, context.getContext());
       if (adapterType != null) {
         adapterType.getAdaptingType().accept(this, new Context(context.context, false, false, context.stack));

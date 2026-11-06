@@ -202,6 +202,12 @@ public abstract class TypeDefinition extends DecoratedTypeElement implements Has
       if (as == null) {
         as = refineType(env, new DecoratedTypeElement(clazz, env), JsonDeserialize.class, JsonDeserialize::as);
       }
+      if (as == null) {
+        as = refineType(env, new DecoratedTypeElement(clazz, env), tools.jackson.databind.annotation.JsonSerialize.class, tools.jackson.databind.annotation.JsonSerialize::as);
+      }
+      if (as == null) {
+        as = refineType(env, new DecoratedTypeElement(clazz, env), tools.jackson.databind.annotation.JsonDeserialize.class, tools.jackson.databind.annotation.JsonDeserialize::as);
+      }
       if (as != null) {
         mixin = (TypeElement) as.asElement();
       }
@@ -607,8 +613,11 @@ public abstract class TypeDefinition extends DecoratedTypeElement implements Has
       super(env);
     }
 
-    private <A extends Annotation> DecoratedExecutableElement refine(DecoratedExecutableElement executable, Class<A> annotation, Function<A, Class<?>> refiner) {
-      DeclaredType as = refineType(env, executable, annotation, refiner);
+    private <A2 extends Annotation, A3 extends Annotation> DecoratedExecutableElement refine(DecoratedExecutableElement executable, Class<A2> annotation2, Function<A2, Class<?>> refiner2, Class<A3> annotation3, Function<A3, Class<?>> refiner3) {
+      DeclaredType as = refineType(env, executable, annotation2, refiner2);
+      if (as == null) {
+        as = refineType(env, executable, annotation3, refiner3);
+      }
       if (as == null) {
         return executable;
       }
@@ -622,19 +631,19 @@ public abstract class TypeDefinition extends DecoratedTypeElement implements Has
 
     @Override
     public boolean isGetter(DecoratedExecutableElement executable) {
-      executable = refine(executable, JsonSerialize.class, JsonSerialize::as);
+      executable = refine(executable, JsonSerialize.class, JsonSerialize::as, tools.jackson.databind.annotation.JsonSerialize.class, tools.jackson.databind.annotation.JsonSerialize::as);
       return executable.isGetter() || (executable.getParameters().isEmpty() && (executable.getAnnotation(JsonProperty.class) != null || executable.getAnnotation(JsonValue.class) != null));
     }
 
     @Override
     public boolean isSetter(DecoratedExecutableElement executable) {
-      executable = refine(executable, JsonDeserialize.class, JsonDeserialize::as);
+      executable = refine(executable, JsonDeserialize.class, JsonDeserialize::as, tools.jackson.databind.annotation.JsonDeserialize.class, tools.jackson.databind.annotation.JsonDeserialize::as);
       return executable.isSetter() || (executable.getParameters().size() == 1 && (executable.getAnnotation(JsonProperty.class) != null || executable.getAnnotation(JsonValue.class) != null));
     }
 
     @Override
     public String getPropertyName(DecoratedExecutableElement method) {
-      JsonProperty jsonProperty = refine(method, JsonSerialize.class, JsonSerialize::as).getAnnotation(JsonProperty.class);
+      JsonProperty jsonProperty = refine(method, JsonSerialize.class, JsonSerialize::as, tools.jackson.databind.annotation.JsonSerialize.class, tools.jackson.databind.annotation.JsonSerialize::as).getAnnotation(JsonProperty.class);
       if (jsonProperty != null) {
         String propertyName = jsonProperty.value();
         if (!propertyName.isEmpty()) {

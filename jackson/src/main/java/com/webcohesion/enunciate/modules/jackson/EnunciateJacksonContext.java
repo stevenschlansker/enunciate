@@ -252,6 +252,25 @@ public class EnunciateJacksonContext extends EnunciateModuleContext {
     knownTypes.put(BigIntegerNode.class.getName(), KnownJsonType.WHOLE_NUMBER);
     knownTypes.put(POJONode.class.getName(), KnownJsonType.OBJECT);
     knownTypes.put(BooleanNode.class.getName(), KnownJsonType.BOOLEAN);
+    knownTypes.put(tools.jackson.databind.JsonNode.class.getName(), KnownJsonType.OBJECT);
+    knownTypes.put(tools.jackson.databind.node.ContainerNode.class.getName(), KnownJsonType.OBJECT);
+    knownTypes.put(tools.jackson.databind.node.ArrayNode.class.getName(), KnownJsonType.ARRAY);
+    knownTypes.put(tools.jackson.databind.node.ObjectNode.class.getName(), KnownJsonType.OBJECT);
+    knownTypes.put(tools.jackson.databind.node.ValueNode.class.getName(), KnownJsonType.STRING);
+    knownTypes.put(tools.jackson.databind.node.StringNode.class.getName(), KnownJsonType.STRING);
+    knownTypes.put(tools.jackson.databind.node.BinaryNode.class.getName(), KnownJsonType.STRING);
+    knownTypes.put(tools.jackson.databind.node.MissingNode.class.getName(), KnownJsonType.STRING);
+    knownTypes.put(tools.jackson.databind.node.NullNode.class.getName(), KnownJsonType.STRING);
+    knownTypes.put(tools.jackson.databind.node.NumericNode.class.getName(), KnownJsonType.WHOLE_NUMBER);
+    knownTypes.put(tools.jackson.databind.node.IntNode.class.getName(), KnownJsonType.WHOLE_NUMBER);
+    knownTypes.put(tools.jackson.databind.node.ShortNode.class.getName(), KnownJsonType.WHOLE_NUMBER);
+    knownTypes.put(tools.jackson.databind.node.FloatNode.class.getName(), KnownJsonType.NUMBER);
+    knownTypes.put(tools.jackson.databind.node.DoubleNode.class.getName(), KnownJsonType.NUMBER);
+    knownTypes.put(tools.jackson.databind.node.DecimalNode.class.getName(), KnownJsonType.NUMBER);
+    knownTypes.put(tools.jackson.databind.node.LongNode.class.getName(), KnownJsonType.WHOLE_NUMBER);
+    knownTypes.put(tools.jackson.databind.node.BigIntegerNode.class.getName(), KnownJsonType.WHOLE_NUMBER);
+    knownTypes.put(tools.jackson.databind.node.POJONode.class.getName(), KnownJsonType.OBJECT);
+    knownTypes.put(tools.jackson.databind.node.BooleanNode.class.getName(), KnownJsonType.BOOLEAN);
     knownTypes.put(Class.class.getName(), KnownJsonType.STRING);
 
     knownTypes.put("java.time.Period", KnownJsonType.STRING);

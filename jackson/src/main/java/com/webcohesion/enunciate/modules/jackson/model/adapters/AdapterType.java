@@ -88,7 +88,7 @@ public class AdapterType extends DecoratedDeclaredType {
     else if (Object.class.getName().equals(element.getQualifiedName().toString())) {
       return null;
     }
-    else if (Converter.class.getName().equals(element.getQualifiedName().toString())) {
+    else if (Converter.class.getName().equals(element.getQualifiedName().toString()) || tools.jackson.databind.util.Converter.class.getName().equals(element.getQualifiedName().toString())) {
       return (DeclaredType) variableContext.resolveTypeVariables(declaredType, env);
     }
     else {
